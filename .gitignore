@@ -1,0 +1,90 @@
+# =========================
+# Flutter/Dart/Pub related
+# =========================
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-plugins
+.pub-cache/
+.pubspec.lock
+
+# For libraries remove pubspec.lock ignore
+# (Keep pubspec.lock for apps)
+
+# =========================
+# Android
+# =========================
+**/android/**/gradle-wrapper.jar
+**/android/.gradle/
+**/android/captures/
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+
+# Keystore files (important security)
+**/android/key.properties
+**/android/app/*.keystore
+**/android/app/*.jks
+
+# =========================
+# iOS
+# =========================
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Runner.xcworkspace/
+**/ios/build/
+
+# =========================
+# Web
+# =========================
+build/web/
+
+# =========================
+# macOS
+# =========================
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+**/macos/build/
+
+# =========================
+# Windows
+# =========================
+**/windows/flutter/ephemeral/
+**/windows/build/
+
+# =========================
+# Linux
+# =========================
+**/linux/flutter/ephemeral/
+**/linux/build/
+
+# =========================
+# IDEs
+# =========================
+
+# VS Code
+.vscode/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# =========================
+# System Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+*.log
