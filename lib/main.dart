@@ -1,21 +1,14 @@
-// =======================================================
-// main.dart
-// Recipe Finder App 
-// =======================================================
-
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-import 'recipe_detail_page.dart';
+import 'package:http/http.dart' as http;
+import 'package:reciepe_finder/recipe_detail_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-// =======================================================
-// ROOT APPLICATION
-// =======================================================
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -23,14 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      // =======================
-      // GLOBAL THEME
-      // =======================
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-
-        // 🔥 Fredoka Applied Globally
         textTheme: GoogleFonts.fredokaTextTheme(),
 
         appBarTheme: AppBarTheme(
@@ -50,8 +37,9 @@ class MyApp extends StatelessWidget {
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadiusGeometry.circular(14),
             ),
+
             textStyle: GoogleFonts.fredoka(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -65,9 +53,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// =======================================================
-// HOME PAGE
-// =======================================================
+// Home Page Code
+
 class RecipeHomePage extends StatefulWidget {
   const RecipeHomePage({super.key});
 
@@ -81,28 +68,33 @@ class _RecipeHomePageState extends State<RecipeHomePage> {
   List meals = [];
   bool isLoading = false;
 
-  // ===================================================
-  // FETCH RECIPES
-  // ===================================================
+  // Fetch Recipes From Server
+  // -------------------------
+
   Future<void> getRecipes() async {
     String dish = _controller.text.trim();
 
+    // Agar Input Me Kuch Nahi Hua Na To Return Kardega
     if (dish.isEmpty) return;
 
+    // State Ko Set Karenge Taki Loading Dikhaye
     setState(() {
       isLoading = true;
       meals = [];
     });
 
-    final url = "https://www.themealdb.com/api/json/v1/1/search.php?s=$dish";
+    // Making Final Usrl To get Data
+    final baseUrl =
+        "https://www.themealdb.com/api/json/v1/1/search.php?s=$dish";
 
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(Uri.parse(baseUrl));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        if (data["meals"] != null) {
+        // Agar na meal jo search kara hai vo mila usse related to
+        if (data['meals'] != null) {
           setState(() {
             meals = data["meals"].take(15).toList();
           });
@@ -111,30 +103,26 @@ class _RecipeHomePageState extends State<RecipeHomePage> {
     } catch (e) {
       print("Error: $e");
     }
-
     setState(() {
       isLoading = false;
     });
   }
 
-  // ===================================================
-  // UI
-  // ===================================================
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Recipe Finder")),
 
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsetsGeometry.all(16),
         child: Column(
           children: [
-            // ================= SEARCH FIELD =================
+            // ================ Search Fields ===============
             TextField(
               controller: _controller,
               style: GoogleFonts.fredoka(),
               decoration: InputDecoration(
-                hintText: "Search food (pasta, cake...)",
+                hintText: "Search Food (pasta, cake...)",
                 hintStyle: GoogleFonts.fredoka(),
                 filled: true,
                 fillColor: Colors.grey[200],
@@ -146,24 +134,25 @@ class _RecipeHomePageState extends State<RecipeHomePage> {
               ),
             ),
 
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
 
-            // ================= SEARCH BUTTON =================
+            // Search Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: getRecipes,
-                child: const Text("Search Recipe"),
+                child: Text("Search Recipe"),
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
+            // Showing Loading Screen Before Getting Data
             if (isLoading) const CircularProgressIndicator(color: Colors.black),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
 
-            // ================= LIST =================
+            // ===================== Printing Or Showing List Of Dishes
             Expanded(
               child: ListView.builder(
                 itemCount: meals.length,
@@ -180,32 +169,36 @@ class _RecipeHomePageState extends State<RecipeHomePage> {
                         ),
                       );
                     },
+
+                    // Card For Dish
                     child: Card(
                       elevation: 2,
                       color: Colors.grey[100],
                       margin: const EdgeInsets.only(bottom: 18),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadiusGeometry.circular(16),
                       ),
+
+                      // Content Inside Card
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          // IMAGE
+                          // Image Of Dish
                           ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
+                            borderRadius: const BorderRadiusGeometry.vertical(
                               top: Radius.circular(16),
                             ),
                             child: Image.network(
                               meal["strMealThumb"],
-                              height: 190,
+                              height: 180,
                               width: double.infinity,
                               fit: BoxFit.cover,
                             ),
                           ),
 
-                          // TEXT SECTION
+                          // Text Area
                           Padding(
-                            padding: const EdgeInsets.all(14),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -216,18 +209,15 @@ class _RecipeHomePageState extends State<RecipeHomePage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-
                                 const SizedBox(height: 6),
 
                                 Text("Category: ${meal["strCategory"]}"),
-
-                                Text("Area: ${meal["strArea"]}"),
+                                Text("Area: ${meal["strCategory"]}"),
 
                                 const SizedBox(height: 4),
-
                                 Text(
                                   "Tags: ${meal["strTags"] ?? "N/A"}",
-                                  style: const TextStyle(color: Colors.black54),
+                                  style: const TextStyle(color: Colors.black),
                                 ),
                               ],
                             ),
