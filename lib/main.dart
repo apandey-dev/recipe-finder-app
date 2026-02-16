@@ -1,6 +1,6 @@
 // =======================================================
 // main.dart
-// Recipe Finder App (Google Fonts Fredoka + Monochrome)
+// Recipe Finder App 
 // =======================================================
 
 import 'dart:convert';
